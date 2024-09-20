@@ -11,6 +11,7 @@ import HourlyDataTable from './VisualizationContainer/HourlyDataTable';
 import DailyDataTable from './VisualizationContainer/DailyDataTable';
 import DownloadButton from './VisualizationContainer/DownloadButton';
 import MultiVariableVisualization from './VisualizationContainer/MultiVariableVisualization';
+import SummaryStatistics from './SummaryStats/SummaryStatistics';
 import { formatHourlyDataForCSV, formatDailyDataForCSV, formatDataForChart } from '../utils/dataFormatting';
 import { hourlyVarMap, dailyVarMap } from '../utils/variableMappings';
 
@@ -24,8 +25,8 @@ const Dashboard: React.FC = () => {
   const { data, loading, error } = useWeatherData(location, startDate, endDate, hourlyVariables, dailyVariables);
 
   // Format the data for visualization
-  const formattedHourlyData = formatDataForChart(data?.hourly, hourlyVariables, hourlyVarMap);
-  const formattedDailyData = formatDataForChart(data?.daily, dailyVariables, dailyVarMap);
+  const formattedHourlyData = data?.hourly ? formatDataForChart(data.hourly, hourlyVariables, hourlyVarMap) : [];
+  const formattedDailyData = data?.daily ? formatDataForChart(data.daily, dailyVariables, dailyVarMap) : [];
 
   return (
     <Box p={3}>
@@ -37,23 +38,51 @@ const Dashboard: React.FC = () => {
         <DailyVarSelector selectedVariables={dailyVariables} setSelectedVariables={setDailyVariables} />
       </Box>
 
-      {/* Visualization Area */}
-      <Box mb={3}>
-        <Typography variant="h6" gutterBottom>
-          Visualizations
-        </Typography>
-        {loading && <CircularProgress />}
-        {error && <Typography color="error">{error}</Typography>}
-        {hourlyVariables.length > 0 && formattedHourlyData.length > 0 && (
-          <MultiVariableVisualization data={formattedHourlyData} selectedVariables={hourlyVariables} />
-        )}
-        {dailyVariables.length > 0 && formattedDailyData.length > 0 && (
-          <MultiVariableVisualization data={formattedDailyData} selectedVariables={dailyVariables} />
-        )}
+      {/* Main Content Area: Two-Column Layout */}
+      <Box display="flex" justifyContent="space-between">
+        {/* Left Column: Visualizations */}
+        <Box flex={2} pr={2}>
+          <Typography variant="h6" gutterBottom>
+            Visualizations
+          </Typography>
+          {loading && <CircularProgress />}
+          {error && <Typography color="error">{error}</Typography>}
+          {hourlyVariables.length > 0 && formattedHourlyData.length > 0 && (
+            <MultiVariableVisualization data={formattedHourlyData} selectedVariables={hourlyVariables} />
+          )}
+          {dailyVariables.length > 0 && formattedDailyData.length > 0 && (
+            <MultiVariableVisualization data={formattedDailyData} selectedVariables={dailyVariables} />
+          )}
+        </Box>
+
+        {/* Right Column: Summary Statistics */}
+        <Box flex={1} pl={2}>
+          {data && (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Summary Statistics
+              </Typography>
+              {hourlyVariables.length > 0 && data.hourly && (
+                <SummaryStatistics
+                  data={data.hourly}
+                  selectedVariables={hourlyVariables}
+                  variableMap={hourlyVarMap}
+                />
+              )}
+              {dailyVariables.length > 0 && data.daily && (
+                <SummaryStatistics
+                  data={data.daily}
+                  selectedVariables={dailyVariables}
+                  variableMap={dailyVarMap}
+                />
+              )}
+            </>
+          )}
+        </Box>
       </Box>
 
       {/* Data Tables */}
-      <Box>
+      <Box mt={3}>
         {data && (
           <>
             {/* Hourly Data Table Accordion */}
@@ -63,7 +92,7 @@ const Dashboard: React.FC = () => {
                 aria-controls="hourly-data-content"
                 id="hourly-data-header"
               >
-                <Typography variant="h6">Hourly Data</Typography>
+                <Typography variant="h6">View/Export: Hourly Data</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box>
@@ -84,7 +113,7 @@ const Dashboard: React.FC = () => {
                 aria-controls="daily-data-content"
                 id="daily-data-header"
               >
-                <Typography variant="h6">Daily Data</Typography>
+                <Typography variant="h6">View/Export: Daily Data</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box>
