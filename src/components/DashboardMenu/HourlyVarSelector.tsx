@@ -1,5 +1,5 @@
 // src/components/DashboardMenu/HourlyVarSelector.tsx
-import { FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
+import { FormControl, FormLabel, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const HOURLY_VARIABLES = [
   "Temperature",
@@ -34,20 +34,21 @@ const HourlyVarSelector: React.FC<HourlyVarSelectorProps> = ({ selectedVariables
 
   return (
     <FormControl component="fieldset" margin="normal">
-      <FormGroup row>
-        {HOURLY_VARIABLES.map((variable) => (
-          <FormControlLabel
-            key={variable}
-            control={
-              <Checkbox
-                checked={selectedVariables.includes(variable)}
-                onChange={() => handleChange(variable)}
-              />
-            }
-            label={variable}
-          />
-        ))}
-      </FormGroup>
+        <FormLabel component="legend">Select Hourly Variables</FormLabel>
+        <FormGroup row>
+            {HOURLY_VARIABLES.map((variable) => (
+            <FormControlLabel
+                key={variable}
+                control={
+                <Checkbox
+                    checked={selectedVariables.includes(variable)}
+                    onChange={() => handleChange(variable)}
+                />
+                }
+                label={variable}
+            />
+            ))}
+        </FormGroup>
     </FormControl>
   );
 };

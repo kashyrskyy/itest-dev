@@ -32,3 +32,19 @@ export const formatDailyDataForCSV = (dailyData: any, selectedVariables: string[
     return row;
   });
 };
+
+// Function to format data for Recharts
+export const formatDataForChart = (data: any, selectedVariables: string[], variableMap: { [key: string]: string }): any[] => {
+    if (!data) return [];
+    const { time, ...rest } = data;
+    return time.map((t: string, index: number) => {
+      const row: { [key: string]: any } = { time: t };
+      selectedVariables.forEach((variable) => {
+        const variableKey = variableMap[variable];
+        if (rest[variableKey]) {
+          row[variable] = rest[variableKey][index];
+        }
+      });
+      return row;
+    });
+  };
