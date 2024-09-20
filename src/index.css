@@ -66,3 +66,29 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* src/components/Dashboard.css */
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-paper {
+  width: 100%;
+  padding: 24px;
+  background-color: #fbfada;
+  border-radius: 15px;
+}
+
+.dashboard-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dashboard-right {
+  padding: 16px;
+  background-color: #e0f7fa;
+  border-radius: 10px;
+}
