@@ -1,6 +1,6 @@
 // src/components/Dashboard.tsx
 import { useState } from 'react';
-import { Box, CircularProgress, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Box, CircularProgress, Typography, Accordion, AccordionSummary, AccordionDetails, Grid, Paper } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LocationSelector from './DashboardMenu/LocationSelector';
 import DateSelector from './DashboardMenu/DateSelector';
@@ -30,19 +30,47 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box p={3}>
+      {/* Notification about data availability */}
+      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
+        <Typography variant="body2" color="textSecondary">
+          **Note:** Historical weather data is updated with a delay of approximately 40-48 hours. This means data up to the last 40-48 hours may not yet be available.
+        </Typography>
+      </Paper>
+      
       {/* Dashboard Navigation Menu */}
-      <Box display="flex" flexWrap="wrap" gap={2} mb={3}>
-        <LocationSelector location={location} setLocation={setLocation} />
-        <DateSelector startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
-        <HourlyVarSelector selectedVariables={hourlyVariables} setSelectedVariables={setHourlyVariables} />
-        <DailyVarSelector selectedVariables={dailyVariables} setSelectedVariables={setDailyVariables} />
+      <Box mb={3}>
+        <Grid container spacing={2} alignItems="flex-start">
+          {/* Left Side: Location and Date */}
+          <Grid item xs={12} sm={3}>
+            <Box display="flex" flexWrap="wrap" gap={2} bgcolor="#E3F4F4" p={2} borderRadius={2}>
+                <Box mb={2}>
+                    <LocationSelector location={location} setLocation={setLocation} />
+                </Box>
+                <Box mb={2}>
+                    <DateSelector startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
+                </Box>
+            </Box>
+          </Grid>
+
+          {/* Right Side: Variable Selectors */}
+          <Grid item xs={12} sm={9}>
+            <Box display="flex" flexWrap="wrap" gap={2} bgcolor="#E3F4F4" p={2} borderRadius={2}>
+                <Box flex={1}>
+                    <HourlyVarSelector selectedVariables={hourlyVariables} setSelectedVariables={setHourlyVariables} />
+                </Box>
+                <Box flex={1}>
+                    <DailyVarSelector selectedVariables={dailyVariables} setSelectedVariables={setDailyVariables} />
+                </Box>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
 
       {/* Main Content Area: Two-Column Layout */}
       <Box display="flex" justifyContent="space-between">
         {/* Left Column: Visualizations */}
-        <Box flex={2} pr={2}>
-          <Typography variant="h6" gutterBottom>
+        <Box flex={2} pr={2} bgcolor="#F8F6F4" p={2} borderRadius={2}>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             Visualizations
           </Typography>
           {loading && <CircularProgress />}
@@ -56,10 +84,10 @@ const Dashboard: React.FC = () => {
         </Box>
 
         {/* Right Column: Summary Statistics */}
-        <Box flex={1} pl={2}>
+        <Box flex={1} pl={2} bgcolor="#F8F6F4" p={2} borderRadius={2}>
           {data && (
             <>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
                 Summary Statistics
               </Typography>
               {hourlyVariables.length > 0 && data.hourly && (
