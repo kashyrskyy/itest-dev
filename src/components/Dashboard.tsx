@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
       {/* Notification about data availability */}
       <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
         <Typography variant="body2" color="textSecondary">
-          **Note:** Historical weather data is updated with a delay of approximately 40-48 hours. This means data up to the last 40-48 hours may not yet be available.
+          Note: Historical weather data is updated with a delay of approximately 40-48 hours. This means data up to the last 40-48 hours may not yet be available.
         </Typography>
       </Paper>
       
