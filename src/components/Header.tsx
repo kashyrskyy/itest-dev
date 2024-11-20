@@ -1,26 +1,40 @@
 // src/components/Header.tsx
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
-  const handleDashboardClick = () => {
-    // This function can handle the navigation to the Dashboard
-    // For now, it can be a simple page reload or a link to the dashboard route
-    window.location.reload(); // Refresh the page as a placeholder
-  };
+  const location = useLocation();
 
   return (
-    <AppBar position="static" style={{ backgroundColor: '#436850' }}>
+    <AppBar position="static" sx={{ bgcolor: '#12372A' }}>
       <Toolbar>
-        <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-          iTest Web App
+        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+          iTest - Development
         </Typography>
-        <Button
-          color="inherit"
-          onClick={handleDashboardClick}
-          style={{ fontWeight: 'bold', fontSize: '16px' }}
-        >
-          Weather Dashboard
-        </Button>
+        <Box>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/dashboard"
+            sx={{
+              textDecoration: 'none',
+              fontWeight: location.pathname === '/dashboard' ? 'bold' : 'normal',
+            }}
+          >
+            Weather Dashboard
+          </Button>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/sensor-dashboard"
+            sx={{
+              textDecoration: 'none',
+              fontWeight: location.pathname === '/sensor-dashboard' ? 'bold' : 'normal',
+            }}
+          >
+            Sensor Dashboard
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );
