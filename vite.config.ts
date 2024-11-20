@@ -8,9 +8,4 @@ export default defineConfig({
   optimizeDeps: {
     include: ['xlsx'], // Ensure xlsx is pre-bundled for development
   },
-  build: {
-    rollupOptions: {
-      external: ['xlsx'], // Treat xlsx as an external dependency during production build
-    },
-  },
 })

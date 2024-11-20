@@ -5,26 +5,18 @@ const convertExcelDate = (excelDate: number): string => {
   const jsDate = new Date((excelDate - 25569) * 86400 * 1000); // Excel epoch + offset
   return jsDate.toISOString(); // Format as "yyyy-MM-ddTHH:mm:ss.sssZ"
 };
-
 export const parseSensorData = async (): Promise<any[]> => {
-  // Combine base URL with the static file path
-  const filePath = `${import.meta.env.BASE_URL}data/sensorData_sample.xlsx`;
-
-  const response = await fetch(filePath);
+  const { read, utils } = await import('xlsx'); // Dynamically import xlsx
+  const response = await fetch(`${import.meta.env.BASE_URL}data/sensorData_sample.xlsx`);
   if (!response.ok) {
-    throw new Error(`Failed to fetch sensor data file from ${filePath}`);
+    throw new Error(`Failed to fetch sensor data file`);
   }
 
   const arrayBuffer = await response.arrayBuffer();
-  const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+  const workbook = read(arrayBuffer, { type: 'array' });
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-  // Convert data to JSON and fix date format
-  const jsonData = XLSX.utils.sheet_to_json(sheet);
-  return jsonData.map((row: any) => ({
-    ...row,
-    Date: convertExcelDate(row.Date), // Convert Excel numeric date to full ISO string
-  }));
+  return utils.sheet_to_json(sheet);
 };
 
 export const filterSensorData = (data: any[], startDate: string, endDate: string, variables: string[]) => {
