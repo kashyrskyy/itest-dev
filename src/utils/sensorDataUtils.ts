@@ -1,3 +1,5 @@
+import { read, utils } from 'xlsx';
+
 // Helper function to convert Excel numeric date to JS Date
 const convertExcelDate = (excelDate: number): string => {
   const jsDate = new Date((excelDate - 25569) * 86400 * 1000); // Excel epoch + offset
@@ -5,7 +7,6 @@ const convertExcelDate = (excelDate: number): string => {
 };
 
 export const parseSensorData = async (): Promise<any[]> => {
-  const { read, utils } = await import('xlsx'); // Dynamically import xlsx
   const filePath = `${import.meta.env.BASE_URL}data/sensorData_sample.xlsx`;
 
   const response = await fetch(filePath);
@@ -17,11 +18,10 @@ export const parseSensorData = async (): Promise<any[]> => {
   const workbook = read(arrayBuffer, { type: 'array' });
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-  // Convert data to JSON and fix date format
-  const jsonData = utils.sheet_to_json(sheet);
+  const jsonData = utils.sheet_to_json(sheet, { raw: true }); // Preserve raw values
   return jsonData.map((row: any) => ({
     ...row,
-    Date: convertExcelDate(row.Date), // Convert Excel date to ISO string
+    Date: convertExcelDate(row.Date), // Convert Excel date to ISO format
   }));
 };
 
@@ -31,16 +31,20 @@ export const filterSensorData = (
   endDate: string,
   variables: string[]
 ) => {
-  console.log("Input Data:", data);
-  console.log("Start Date:", startDate);
-  console.log("End Date:", endDate);
-  console.log("Selected Variables:", variables);
+  console.log('Input Data:', data);
+  console.log('Start Date:', startDate);
+  console.log('End Date:', endDate);
+  console.log('Selected Variables:', variables);
 
   const filteredData = data
     .filter((row) => {
+      if (!row.Date) {
+        console.warn('Row skipped due to missing Date field:', row);
+        return false;
+      }
       const rowDate = new Date(row.Date);
       const isWithinRange = rowDate >= new Date(startDate) && rowDate <= new Date(endDate);
-      if (!isWithinRange) console.log("Row Excluded (Date):", row);
+      if (!isWithinRange) console.log('Row Excluded (Date):', row);
       return isWithinRange;
     })
     .map((row) => {
@@ -54,6 +58,6 @@ export const filterSensorData = (
       return filteredRow;
     });
 
-  console.log("Filtered Data:", filteredData);
+  console.log('Filtered Data:', filteredData);
   return filteredData;
 };

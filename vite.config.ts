@@ -5,7 +5,4 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/itest-dev/',
-  optimizeDeps: {
-    include: ['xlsx'], // Ensure xlsx is pre-bundled for development
-  },
 })
