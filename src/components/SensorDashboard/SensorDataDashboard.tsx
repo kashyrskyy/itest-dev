@@ -34,7 +34,7 @@ const SensorDataDashboard: React.FC = () => {
       {/* Notification about data availability */}
       <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
         <Typography variant="body2" color="textSecondary">
-          Note: Sensor data is displayed for the selected time range and variables. Please ensure variable selection for visualization.
+          Note: Sensor data is displayed for the available time range - November 7-21, 2024. Please ensure variable selection for visualization.
         </Typography>
       </Paper>
 
