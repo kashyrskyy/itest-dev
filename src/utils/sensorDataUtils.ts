@@ -44,7 +44,7 @@ export const filterSensorData = (
       }
       const rowDate = new Date(row.Date);
       const isWithinRange = rowDate >= new Date(startDate) && rowDate <= new Date(endDate);
-      if (!isWithinRange) console.log('Row Excluded (Date):', row);
+      // if (!isWithinRange) console.log('Row Excluded (Date):', row);
       return isWithinRange;
     })
     .map((row) => {
@@ -58,6 +58,6 @@ export const filterSensorData = (
       return filteredRow;
     });
 
-  console.log('Filtered Data:', filteredData);
+  //console.log('Filtered Data:', filteredData);
   return filteredData;
 };

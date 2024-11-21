@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Box, Grid, Paper, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Grid, Paper, Typography, CircularProgress } from '@mui/material';
 import DateSelector from '../DashboardMenu/DateSelector';
 import SensorVariableSelector from './SensorVariableSelector';
 import SensorDataVisualization from './SensorDataVisualization';
 import SensorSummaryStatistics from './SensorSummaryStatistics';
 import CollapsibleDataTable from './CollapsibleDataTable';
+import CorrelationAnalysis from "../DataAnalysis/CorrelationAnalysis";
 import { parseSensorData, filterSensorData } from '../../utils/sensorDataUtils';
 
 const SensorDataDashboard: React.FC = () => {
@@ -13,6 +14,18 @@ const SensorDataDashboard: React.FC = () => {
   const [endDate, setEndDate] = useState('');
   const [selectedVariables, setSelectedVariables] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [isCorrelationOpen, setIsCorrelationOpen] = useState(false); // Toggle state
+
+  const variables = [
+    "Temperature",
+    "Ext.Temperature",
+    "Humidity",
+    "Ext.Humidity",
+    "CO2",
+    "pH",
+    "Salinity"
+  ];  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +122,27 @@ const SensorDataDashboard: React.FC = () => {
           )}
         </Box>
       </Box>
+
+      {/* Correlation Analysis Toggle */}
+      <Box mt={3}>
+        <Button
+          variant="contained"
+          color={isCorrelationOpen ? "secondary" : "primary"}
+          onClick={() => setIsCorrelationOpen(!isCorrelationOpen)}
+        >
+          {isCorrelationOpen ? "Hide Correlation Analysis" : "Show Correlation Analysis"}
+        </Button>
+      </Box>
+
+      {/* Conditional Rendering of Correlation Analysis */}
+      {isCorrelationOpen && (
+        <Grid item xs={12} sm={4}>
+          <CorrelationAnalysis
+            data={data.filter((row) => row.Date >= startDate && row.Date <= endDate)} // Filter data by date range
+            variables={variables}
+          />
+        </Grid>
+      )}
 
       {/* Collapsible Data Table */}
       <Box mt={3}>
