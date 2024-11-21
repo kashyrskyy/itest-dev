@@ -30,7 +30,7 @@ const SensorDataDashboard: React.FC = () => {
   const filteredData = filterSensorData(data, startDate, endDate, selectedVariables);
 
   return (
-    <Box p={3}>
+    <Box p={3} display="flex" flexDirection="column">
       {/* Notification about data availability */}
       <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
         <Typography variant="body2" color="textSecondary">
@@ -44,31 +44,37 @@ const SensorDataDashboard: React.FC = () => {
           {/* Left Side: Date Selection */}
           <Grid item xs={12} sm={4}>
             <Box display="flex" flexWrap="wrap" gap={2} bgcolor="#E3F4F4" p={2} borderRadius={2}>
-              <DateSelector
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-              />
+              <DateSelector startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} />
             </Box>
           </Grid>
-
           {/* Right Side: Variable Selection */}
           <Grid item xs={12} sm={8}>
             <Box display="flex" flexWrap="wrap" gap={2} bgcolor="#E3F4F4" p={2} borderRadius={2}>
-              <SensorVariableSelector
-                selectedVariables={selectedVariables}
-                setSelectedVariables={setSelectedVariables}
-              />
+              <SensorVariableSelector selectedVariables={selectedVariables} setSelectedVariables={setSelectedVariables} />
             </Box>
           </Grid>
         </Grid>
       </Box>
 
       {/* Main Content Area: Two-Column Layout */}
-      <Box display="flex" justifyContent="space-between">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        flexGrow={1}
+        gap={2}
+        height="100%"
+      >
         {/* Left Column: Visualizations */}
-        <Box flex={2} pr={2} bgcolor="#F8F6F4" p={2} borderRadius={2}>
+        <Box
+          width="66.67%" // 2/3 of space
+          bgcolor="#F8F6F4"
+          p={2}
+          borderRadius={2}
+          minHeight="400px"
+          display="flex"
+          flexDirection="column"
+        >
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             Visualizations
           </Typography>
@@ -82,7 +88,15 @@ const SensorDataDashboard: React.FC = () => {
         </Box>
 
         {/* Right Column: Summary Statistics */}
-        <Box flex={1} pl={2} bgcolor="#F8F6F4" p={2} borderRadius={2}>
+        <Box
+          width="33.33%" // 1/3 of space
+          bgcolor="#F8F6F4"
+          p={2}
+          borderRadius={2}
+          minHeight="400px"
+          display="flex"
+          flexDirection="column"
+        >
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             Summary Statistics
           </Typography>

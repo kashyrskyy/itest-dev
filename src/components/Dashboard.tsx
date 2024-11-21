@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
   const formattedDailyData = data?.daily ? formatDataForChart(data.daily, dailyVariables, dailyVarMap) : [];
 
   return (
-    <Box p={3}>
+    <Box p={3} display="flex" flexDirection="column">
       {/* Notification about data availability */}
       <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
         <Typography variant="body2" color="textSecondary">
