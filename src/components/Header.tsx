@@ -2,6 +2,8 @@
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
+import LogoutButton from "./LogoutButton";
+
 const Header: React.FC = () => {
   const location = useLocation();
 
@@ -34,6 +36,18 @@ const Header: React.FC = () => {
           >
             Sensor Dashboard
           </Button>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/my-account"
+            sx={{
+              textDecoration: "none",
+              fontWeight: location.pathname === "/my-account" ? "bold" : "normal",
+            }}
+          >
+            My Account
+          </Button>
+          <LogoutButton />
         </Box>
       </Toolbar>
     </AppBar>
