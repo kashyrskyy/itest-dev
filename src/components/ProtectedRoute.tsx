@@ -1,6 +1,7 @@
 // src/components/ProtectedRoute.tsx
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { CircularProgress } from "@mui/material";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   if (loading) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <h1>Loading...</h1>
+        <CircularProgress />
       </div>
     );
   }

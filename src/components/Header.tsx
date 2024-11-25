@@ -39,6 +39,17 @@ const Header: React.FC = () => {
           <Button
             color="inherit"
             component={Link}
+            to="/data-sources"
+            sx={{
+              textDecoration: "none",
+              fontWeight: location.pathname === "/data-sources" ? "bold" : "normal",
+            }}
+          >
+            Data Sources
+          </Button>
+          <Button
+            color="inherit"
+            component={Link}
             to="/my-account"
             sx={{
               textDecoration: "none",

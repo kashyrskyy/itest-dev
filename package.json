@@ -21,11 +21,13 @@
     "axios": "^1.7.7",
     "firebase": "^11.0.2",
     "mathjs": "^14.0.0",
+    "notistack": "^3.0.1",
     "openmeteo": "^1.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "recharts": "^2.12.7",
+    "regression": "^2.0.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

@@ -16,12 +16,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("Auth State Changed:", currentUser); // Debugging
       setUser(currentUser);
       setLoading(false);
     });
-
+  
     return () => unsubscribe();
   }, []);
+  
 
   return (
     <AuthContext.Provider value={{ user, loading }}>

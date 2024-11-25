@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from './components/Dashboard';
 import SensorDataDashboard from './components/SensorDashboard/SensorDataDashboard';
 
+import DataSourcesPage from "./components/DataSources/DataSourcesPage";
 import MyAccount from "./components/MyAccount";
 
 const App: React.FC = () => {
@@ -38,6 +39,14 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <SensorDataDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/data-sources"
+                element={
+                  <ProtectedRoute>
+                    <DataSourcesPage />
                   </ProtectedRoute>
                 }
               />
