@@ -21,6 +21,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useSnackbar } from "notistack";
 import { useDatasetDeletion } from "../../hooks/useDatasetDeletion"; // Import the hook
 
+import DatasetPreviewDialog from "./DatasetPreviewDialog"; // Import the preview dialog
+
 export interface Dataset {
   id: string;
   name: string;
@@ -42,6 +44,19 @@ const DatasetTable: React.FC<DatasetTableProps> = ({ datasets, onDatasetUpdate }
   const { deleteDataset } = useDatasetDeletion(); // Use the deletion hook
   const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+
+  const handlePreview = (datasetUrl: string) => {
+    setPreviewUrl(datasetUrl);
+    setPreviewOpen(true);
+  };
+
+  const closePreview = () => {
+    setPreviewOpen(false);
+    setPreviewUrl(null);
+  };
 
   useEffect(() => {
     const fetchDatasets = async () => {
@@ -118,6 +133,15 @@ const DatasetTable: React.FC<DatasetTableProps> = ({ datasets, onDatasetUpdate }
                 <TableCell>
                   <Button
                     variant="contained"
+                    color="primary"
+                    onClick={() => handlePreview(dataset.downloadURL)}
+                  >
+                    Preview
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
                     color="secondary"
                     onClick={() => openDialog(dataset)}
                   >
@@ -129,6 +153,13 @@ const DatasetTable: React.FC<DatasetTableProps> = ({ datasets, onDatasetUpdate }
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Dataset Preview Dialog */}
+      <DatasetPreviewDialog
+        open={previewOpen}
+        datasetUrl={previewUrl}
+        onClose={closePreview}
+      />
 
       <Dialog open={dialogOpen} onClose={closeDialog}>
         <DialogTitle>Confirm Delete</DialogTitle>
