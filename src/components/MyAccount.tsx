@@ -20,6 +20,7 @@ const MyAccount: React.FC = () => {
     createdAt: string | null;
     lastLogin: string | null;
     uid: string;
+    isAnonymous?: boolean; // Added to track if the user is anonymous
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +44,7 @@ const MyAccount: React.FC = () => {
               createdAt: data.createdAt?.toDate().toLocaleString() || null,
               lastLogin: data.lastLogin?.toDate().toLocaleString() || null,
               uid: user.uid,
+              isAnonymous: user.isAnonymous, // Capture anonymous status
             });
           } else {
             setError(
@@ -97,10 +99,10 @@ const MyAccount: React.FC = () => {
             </Avatar>
           }
           <Typography variant="h5" gutterBottom>
-            {"User"}
+            {userData?.isAnonymous ? "Anonymous User" : "User"}
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            {"User Account Details"}
+            {"Account Details"}
           </Typography>
         </Box>
         <CardContent>

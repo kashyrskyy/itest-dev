@@ -5,6 +5,7 @@ import { auth, db } from "../firebaseConfig";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { Button, Box, Typography, CircularProgress, Alert } from "@mui/material";
+import AnonymousLogin from "./AnonymousLogin"; // Import Anonymous Login Component
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate(); // For navigation after login
@@ -17,12 +18,13 @@ const LoginPage: React.FC = () => {
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
-  
+
       if (!userSnapshot.exists()) {
         // New user: Record account creation time
         await setDoc(userDocRef, {
           createdAt: serverTimestamp(), // Firestore timestamp for account creation
           lastLogin: serverTimestamp(), // Firestore timestamp for last login
+          isAnonymous: user.isAnonymous || false, // Distinguish user type
         });
         console.log("New user added to Firestore.");
       } else {
@@ -85,6 +87,7 @@ const LoginPage: React.FC = () => {
       >
         {loading ? <CircularProgress size={24} /> : "Sign in with Google"}
       </Button>
+      <AnonymousLogin />
     </Box>
   );
 };

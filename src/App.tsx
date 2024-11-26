@@ -25,11 +25,11 @@ const App: React.FC = () => {
             <Routes>
               {/* Public Routes */}
               <Route path="/login" element={<LoginPage />} />
-              {/* Private Routes */}
+              {/* Anonymous Access Routes */}
               <Route
                 path="/dashboard"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowAnonymous>
                     <Dashboard />
                   </ProtectedRoute>
                 }
@@ -37,11 +37,12 @@ const App: React.FC = () => {
               <Route
                 path="/sensor-dashboard"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowAnonymous>
                     <SensorDataDashboard />
                   </ProtectedRoute>
                 }
               />
+              {/* Fully Authenticated Routes */}
               <Route
                 path="/data-sources"
                 element={
