@@ -60,7 +60,7 @@ const App: React.FC = () => {
                 }
               />
               {/* Redirect unknown routes */}
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </Box>
           <Footer />
