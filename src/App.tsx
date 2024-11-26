@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import { Box } from '@mui/material';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 
 import Header from './components/Header';
@@ -18,7 +18,7 @@ import MyAccount from "./components/MyAccount";
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Router basename="/itest-dev">
+      <Router>
         <Box display="flex" flexDirection="column" minHeight="100vh">
           <Header />
           <Box flexGrow={1} p={3}>
