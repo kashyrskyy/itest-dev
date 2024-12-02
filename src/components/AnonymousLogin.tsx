@@ -47,7 +47,7 @@ const AnonymousLogin: React.FC = () => {
       disabled={loading}
       sx={{ marginTop: 2 }}
     >
-      {loading ? <CircularProgress size={24} /> : "Continue as Guest"}
+      {loading ? <CircularProgress size={24} /> : "Sign in Anonymously"}
     </Button>
   );
 };
