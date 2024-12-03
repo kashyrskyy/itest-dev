@@ -2,11 +2,15 @@
 import { Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { auth, db } from "../firebaseConfig";
-import { signInAnonymously } from "firebase/auth";
+import { signInAnonymously, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-const AnonymousLogin: React.FC = () => {
+interface AnonymousLoginProps {
+  keepSignedIn: boolean; // Prop for "Keep me signed in"
+}
+
+const AnonymousLogin: React.FC<AnonymousLoginProps> = ({ keepSignedIn }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -14,6 +18,10 @@ const AnonymousLogin: React.FC = () => {
     setLoading(true);
 
     try {
+      // Set persistence based on "Keep me signed in" state
+      const persistence = keepSignedIn ? browserLocalPersistence : browserSessionPersistence;
+      await setPersistence(auth, persistence);
+
       const result = await signInAnonymously(auth);
       const user = result.user;
       console.log("Anonymous User Logged In:", user);

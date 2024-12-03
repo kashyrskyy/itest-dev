@@ -2,19 +2,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebaseConfig";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { Button, Box, Typography, CircularProgress, Alert } from "@mui/material";
-import AnonymousLogin from "./AnonymousLogin"; // Import Anonymous Login Component
+import AnonymousLogin from "./AnonymousLogin";
+import KeepSignedInCheckbox from "./KeepSignedInCheckbox";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate(); // For navigation after login
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [keepSignedIn, setKeepSignedIn] = useState(false); // State for checkbox
 
   const saveUserToFirestore = async () => {
     const user = auth.currentUser;
-  
+
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
@@ -45,6 +47,9 @@ const LoginPage: React.FC = () => {
     setError(null);
 
     try {
+      const persistence = keepSignedIn ? browserLocalPersistence : browserSessionPersistence;
+      await setPersistence(auth, persistence);
+
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log("User Info:", {
@@ -87,7 +92,11 @@ const LoginPage: React.FC = () => {
       >
         {loading ? <CircularProgress size={24} /> : "Sign in with Google"}
       </Button>
-      <AnonymousLogin />
+      <AnonymousLogin keepSignedIn={keepSignedIn} />
+      <KeepSignedInCheckbox
+        keepSignedIn={keepSignedIn}
+        onChange={(checked) => setKeepSignedIn(checked)}
+      />
     </Box>
   );
 };
